@@ -1,18 +1,19 @@
-import express, { Request, Response, NextFunction } from 'express'
-import usersRoute from './routes/users_route'
+import express from 'express';
+import statusRoute from './routes/status.route';
+import usersRoute from './routes/users.route';
 const app = express();
 
 // app config  <-------------------------
 app.use(express.json()) //add a middleware to check the content-type
 app.use(express.urlencoded({ extended: true })) //encoder
 
-
+//Routes config  <-------------------------
 app.use(usersRoute);
+// express is a routing middleware to manage  http requests and responses
 
-app.get('/status', (req: Request, res: Response, next: NextFunction) => {
-  res.status(200).send({ foo: 'bar' })
-});
+app.use(statusRoute)
 
+//Server initialization  <-------------------------
 app.listen(3000, () => {
   console.log('App running on port 3000')
 });
