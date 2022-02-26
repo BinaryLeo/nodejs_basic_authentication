@@ -35,11 +35,11 @@ class UserRepository {
         RETURNING uuid
     `
 
-    const values = [user.username, user.password]
+    const values = [user.username, user.password];
 
-    const { rows } = await db.query<{ uuid: string }>(script, values)
-    const [newUser] = rows
-    return newUser.uuid
+    const { rows } = await db.query<{ uuid: string }>(script, values);
+    const [newUser] = rows;
+    return newUser.uuid;
   }
 
   async update(user: User): Promise<void> {
@@ -51,8 +51,8 @@ class UserRepository {
         WHERE uuid = $3
     `
 
-    const values = [user.username, user.password, user.uuid]
-    await db.query(script, values)
+    const values = [user.username, user.password, user.uuid];
+    await db.query(script, values);
   }
 
   async remove(uuid: string): Promise<void> {
@@ -61,8 +61,24 @@ class UserRepository {
         FROM application_user
         WHERE uuid = $1
     `
-    const values = [uuid]
-    await db.query(script, values)
+    const values = [uuid];
+    await db.query(script, values);
+  }
+  async findByUsernameAndPassword(username: string, password: string): Promise<User | null> {
+    try {
+      const script = `
+        SELECT uuid, username
+        FROM application_user
+        WHERE username = $1
+        AND password = crypt($2, 'my_salt')
+    `;
+    const values = [username, password];
+    const { rows } = await db.query<User>(script, values);
+    const [user] = rows;
+    return !user? null : user;
+    } catch (error) {
+      throw  new DatabaseError('Error by consulting username and password', error);
+    }
   }
 }
-export default new UserRepository()
+export default new UserRepository();
