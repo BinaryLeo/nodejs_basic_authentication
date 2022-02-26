@@ -5,7 +5,7 @@ class DatabaseError extends Error {
     
     )
 {
-    super(message)
+    super(message);
 }
 }
 export default DatabaseError;
