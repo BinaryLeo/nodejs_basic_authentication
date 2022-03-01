@@ -1,4 +1,5 @@
 import express from 'express';
+import bearerAuthenticationMiddleware from './middlewares/bearer-authentication-middleware';
 import errorHandler from './middlewares/error.handler.middleware';
 import authorizationRoute from './routes/authorization.route';
 import statusRoute from './routes/status.route';
@@ -14,7 +15,7 @@ app.use(express.urlencoded({ extended: true })); //encoder
 app.use(statusRoute);//check if is running
 app.use(usersRoute);// User Route
 // express is a routing middleware to manage  http requests and responses
-app.use(authorizationRoute);// Authorization Route
+app.use(bearerAuthenticationMiddleware, authorizationRoute);// Bearer and Authorization Route
 
 //Error Handler Configuration
 app.use(errorHandler); //using NextFuncion (can to receive an error or not)
