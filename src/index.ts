@@ -1,5 +1,5 @@
 import express from 'express';
-import bearerAuthenticationMiddleware from './middlewares/bearer-authentication-middleware';
+import jwtAuthenticationMiddleware from './middlewares/jwt-authentication-middleware';
 import errorHandler from './middlewares/error.handler.middleware';
 import authorizationRoute from './routes/authorization.route';
 import statusRoute from './routes/status.route';
@@ -13,10 +13,12 @@ app.use(express.urlencoded({ extended: true })); //encoder
 //Routes config  <-------------------------
 
 app.use(statusRoute);//check if is running
-app.use(usersRoute);// User Route
+app.use(authorizationRoute);// Authorization Route
+app.use(jwtAuthenticationMiddleware)// JWT Authentication
 // express is a routing middleware to manage  http requests and responses
-app.use(bearerAuthenticationMiddleware, authorizationRoute);// Bearer and Authorization Route
 
+// Every route bellow will be protected by jwtAuthenticationMiddleware.
+app.use(usersRoute);//User Route
 //Error Handler Configuration
 app.use(errorHandler); //using NextFuncion (can to receive an error or not)
 

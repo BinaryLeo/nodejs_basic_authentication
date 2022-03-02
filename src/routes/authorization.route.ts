@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction, Router } from 'express'
-
-import JWT from 'jsonwebtoken'
-import { StatusCodes } from 'http-status-codes'
-import basicAuthenticationMiddleware from '../middlewares/basic-authentication.middleware'
-import ForbiddenError from '../models/errors/forbidden.error'
+import { Request, Response, NextFunction, Router } from 'express';
+import JWT from 'jsonwebtoken';
+import { StatusCodes } from 'http-status-codes';
+import basicAuthenticationMiddleware from '../middlewares/basic-authentication.middleware';
+import ForbiddenError from '../models/errors/forbidden.error';
+import jwtAuthenticationMiddleware from '../middlewares/jwt-authentication-middleware';
 const authorizationRoute = Router();
 
 authorizationRoute.post(
@@ -23,7 +23,12 @@ authorizationRoute.post(
     } catch (error) {
       next(error);
     }
-  },
-)
+  }
+);
+
+// Already validated by jwt Authentication Middleware, do we need to call the endpoint to respond OK
+authorizationRoute.post('/token/validate', jwtAuthenticationMiddleware,(req: Request, res: Response, next: NextFunction) => {
+  res.sendStatus(StatusCodes.OK);
+});
 
 export default authorizationRoute;

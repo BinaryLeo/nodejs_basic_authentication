@@ -33,7 +33,7 @@ async function basicAuthenticationMiddleware(
       throw new ForbiddenError('Username or password invalid');
     }
     req.user = user;
-    next() //Keeps propagating the request between middleware and routes
+    next(); //Keeps propagating the request between middleware and routes
   } catch (error) {
     next(error);
   }
