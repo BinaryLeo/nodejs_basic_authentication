@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, Router } from 'express';
-import JWT from 'jsonwebtoken';
+import JWT, { SignOptions } from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
 import basicAuthenticationMiddleware from '../middlewares/basic-authentication.middleware';
 import ForbiddenError from '../models/errors/forbidden.error';
@@ -16,7 +16,7 @@ authorizationRoute.post(
         throw new ForbiddenError('User not informed');
       }
       const jwtPayload = { username: user.username };
-      const jwtOptions = { subject: user?.uuid };
+      const jwtOptions: SignOptions = { subject: user?.uuid, expiresIn: '15m' }; //15 minutes
       const jwtSecret = 'scretKey';
       const jwt = JWT.sign(jwtPayload, jwtSecret, jwtOptions);
       res.status(StatusCodes.OK).json({ token: jwt });
@@ -32,3 +32,4 @@ authorizationRoute.post('/token/validate', jwtAuthenticationMiddleware,(req: Req
 });
 
 export default authorizationRoute;
+ 
