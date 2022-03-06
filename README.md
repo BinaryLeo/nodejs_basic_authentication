@@ -37,7 +37,8 @@ This project was built using the following technologies and features:
 - Clone the repository.
 - Open the project from VS Code.
 - Run <code> npm install</code> to install the dependencies
-- Rename the file from <code>Help.env</code> to <code>.env</code> and type your Database Credentials ![image](https://user-images.githubusercontent.com/72607039/156196030-88a386b8-e05e-479b-937b-2e478694ba3e.png)
+- Rename the file from <code>config/default copy.json</code> to <code>default.json</code> and type your Database Credentials.
+
 
 
 - Create your Database and table following the script below - the script can be found in the init.sql file ![image](https://user-images.githubusercontent.com/72607039/156194093-bf09b803-0431-4bb2-9be4-2a8e3e6e7149.png)
