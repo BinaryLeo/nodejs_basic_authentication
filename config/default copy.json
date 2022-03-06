@@ -1,0 +1,8 @@
+{
+    "database": {
+        "uri": "postgres://postgres:password@localhost:number/dbName"
+    },
+    "authentication": {
+        "cryptKey": "scretKey"
+    }
+}

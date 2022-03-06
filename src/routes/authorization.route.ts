@@ -4,6 +4,8 @@ import { StatusCodes } from 'http-status-codes';
 import basicAuthenticationMiddleware from '../middlewares/basic-authentication.middleware';
 import ForbiddenError from '../models/errors/forbidden.error';
 import jwtAuthenticationMiddleware from '../middlewares/jwt-authentication-middleware';
+import config from 'config';
+
 const authorizationRoute = Router();
 
 authorizationRoute.post(
@@ -17,7 +19,7 @@ authorizationRoute.post(
       }
       const jwtPayload = { username: user.username };
       const jwtOptions: SignOptions = { subject: user?.uuid, expiresIn: '15m' }; //15 minutes
-      const jwtSecret = 'scretKey';
+      const jwtSecret = config.get<string>('authentication.cryptKey');
       const jwt = JWT.sign(jwtPayload, jwtSecret, jwtOptions);
       res.status(StatusCodes.OK).json({ token: jwt });
     } catch (error) {
@@ -25,7 +27,6 @@ authorizationRoute.post(
     }
   }
 );
-
 
 authorizationRoute.post(
   '/token/refresh',

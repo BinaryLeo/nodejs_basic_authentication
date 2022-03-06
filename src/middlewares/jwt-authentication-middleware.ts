@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import ForbiddenError from '../models/errors/forbidden.error';
 import JWT from 'jsonwebtoken';
+import config from 'config';
 async function jwtAuthenticationMiddleware(
   req: Request,
   res: Response,
@@ -16,7 +17,7 @@ async function jwtAuthenticationMiddleware(
       throw new ForbiddenError('Invalid authentication type');
     }
     try {
-      const tokenPayload = JWT.verify(token, 'scretKey');
+      const tokenPayload = JWT.verify(token,  config.get<string>('authentication.cryptKey'));
 
       if (typeof tokenPayload !== 'object' || !tokenPayload.sub) {
         throw new ForbiddenError('Invalid token');
